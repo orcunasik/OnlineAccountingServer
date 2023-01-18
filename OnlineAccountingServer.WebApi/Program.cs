@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using OnlineAccountingServer.Persistance.Context;
 using OnlineAccountingServer.Presentation;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -30,6 +32,10 @@ builder.Services.AddSwaggerGen(setup =>
         { jwtSecuritySheme, Array.Empty<string>() }
     });
 });
+
+builder.Services
+    .AddDbContext<AppDbContext>(options => options
+    .UseSqlServer(builder.Configuration.GetConnectionString("SqlServer")));
 
 var app = builder.Build();
 
